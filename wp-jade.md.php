@@ -13,24 +13,32 @@
  */
 
 // 如果直接调用该文件，则中止
-if ( ! defined( 'WPINC' ) ) {
-	 die;
+if (!defined('WPINC')) {
+    die;
 }
 
 // 定义常量
-define( 'JADE_VERSION', '0.1' );
-define( 'MINIMUM_WP_VERSION', '4.8' );
-define( 'JADE_NAME', plugin_basename( __FILE__ ) );
-define( 'JADE_DIR', plugin_dir_path( __FILE__ ) );
-define( 'JADE_URL', plugin_dir_url( __FILE__ ) );
+define('JADE_VERSION', '0.1');
+define('MINIMUM_WP_VERSION', '4.8');
+define('JADE_DIR', dirname(__FILE__)); //相对路径
+define('JADE_URL', plugins_url('', __FILE__)); //资源路径
 
-// 检查Jetpack模块是否启用
-if ( ! class_exists( 'WPCom_Markdown' ) ) {
-	include_once JADE_DIR . 'includes/Easy_Markdown.php';
+// 检查并且加载Jetpack模块
+if (!class_exists('WPCom_Markdown')) {
+    require_once JADE_DIR . '/includes/class/Easy_Markdown.php';
 }
 
-// 加载Markdown类
-include_once JADE_DIR . 'includes/Markdown_Editor.php';
+// 检查并且加载Markdown类
+if (!class_exists('Markdown_Editor')) {
+    require_once JADE_DIR . '/includes/class/Markdown_Editor.php';
+}
+
+// 检查并且加载后台选项框架
+if (!function_exists('optionsframework_init')) {
+    require_once JADE_DIR . '/includes/options/options-framework.php';
+}
+
+//echo jade_get_option('example_text_mini');
 
 // 获取类实例
 Markdown_Editor::get_instance();

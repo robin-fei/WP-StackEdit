@@ -27,8 +27,7 @@ class Markdown_Editor
      *
      * @since 0.1
      */
-    private function __construct()
-    {
+    private function __construct() {
 
         // 添加默认文章类型支持
         add_post_type_support('post', 'wpcom-markdown');
@@ -57,8 +56,7 @@ class Markdown_Editor
      * @since 0.1
      * @return string $instance 插件实例
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (!isset(self::$instance)) {
             $c = __CLASS__;
             self::$instance = new $c;
@@ -72,8 +70,7 @@ class Markdown_Editor
      * @since 0.1
      * @return void
      */
-    public function __clone()
-    {
+    public function __clone() {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
@@ -83,8 +80,7 @@ class Markdown_Editor
      * @since  0.1
      * @return bool
      */
-    function get_post_type()
-    {
+    function get_post_type() {
         return get_current_screen()->post_type;
     }
 
@@ -94,8 +90,7 @@ class Markdown_Editor
      * @since 0.1
      * @return void
      */
-    function enqueue_scripts_styles()
-    {
+    function enqueue_scripts_styles() {
 
         // 仅在指定的文章类型中列队加载
         if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
@@ -110,8 +105,7 @@ class Markdown_Editor
      * @since 0.1
      * @return void
      */
-    function highlight_scripts_styles()
-    {
+    function highlight_scripts_styles() {
 
         // 仅在文章/页面类型列队加载
         if (!is_single()) {
@@ -128,15 +122,13 @@ class Markdown_Editor
      * @since 0.1
      * @return void
      */
-    function load_jetpack_markdown_module()
-    {
+    function load_jetpack_markdown_module() {
 
         // 如果模块处于活动状态，将其激活以发布，评论仍然是可选的
         if (class_exists('Easy_Markdown')) {
             add_filter('pre_option_' . Easy_Markdown::POST_OPTION, '__return_true');
         }
         add_action('admin_init', array($this, 'jetpack_markdown_posting_always_on'), 11);
-        add_filter('plugin_action_links_' . JADE_NAME, array($this, 'jetpack_markdown_settings_link'));
 
     }
 
@@ -146,8 +138,7 @@ class Markdown_Editor
      * @since 0.1
      * @return void
      */
-    function jetpack_markdown_posting_always_on()
-    {
+    function jetpack_markdown_posting_always_on() {
         if (!class_exists('Easy_Markdown')) {
             return;
         }
@@ -158,31 +149,12 @@ class Markdown_Editor
     }
 
     /**
-     * 添加设置链接
-     *
-     * @since 0.1
-     * @param  string $actions Markdown settings.
-     * @return array
-     */
-    function jetpack_markdown_settings_link($actions)
-    {
-        return array_merge(
-            array(
-                'settings' => sprintf('<a href="%s">%s</a>', 'options-discussion.php#' . Easy_Markdown::COMMENT_OPTION, __('Settings', 'jetpack')),
-            ),
-            $actions
-        );
-        return $actions;
-    }
-
-    /**
      * 初始化编辑器
      *
      * @since 0.1
      * @return void
      */
-    function init_editor()
-    {
+    function init_editor() {
 
         // 仅在指定的文章类型中初始化
         if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
@@ -203,8 +175,7 @@ class Markdown_Editor
      * @param  array $qt_init Quick tag args.
      * @return array
      */
-    function quicktags_settings($qt_init)
-    {
+    function quicktags_settings($qt_init) {
 
         // Only remove buttons on specified post types.
         if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
@@ -222,8 +193,7 @@ class Markdown_Editor
      * @param  array $default Default post types.
      * @return array
      */
-    function disable_rich_editing($default)
-    {
+    function disable_rich_editing($default) {
 
         if (post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
             return false;
