@@ -11,8 +11,7 @@ if (!defined('WPINC')) {
 /**
  * 主要插件类
  */
-class Markdown_Editor
-{
+class Markdown_Editor {
 
     /**
      * 默认实例
@@ -37,10 +36,12 @@ class Markdown_Editor
         add_action('admin_footer', array($this, 'init_editor'));
 
         // 删除快速标签按钮.
-        add_filter('quicktags_settings', array($this, 'quicktags_settings'), 'content');
+        //add_filter('quicktags_settings', array($this, 'quicktags_settings'), 'content');
 
         // 删除富文本编辑器
-        add_filter('user_can_richedit', array($this, 'disable_rich_editing'));
+        //add_filter('user_can_richedit', array($this, 'disable_rich_editing'));
+
+        add_filter( 'wp_default_editor', array($this, 'jade_default_editor') );
 
         // 加载前端静态资源
         //add_action('wp_enqueue_scripts', array($this, 'frontend_scripts_styles'));
@@ -97,7 +98,7 @@ class Markdown_Editor
             return;
         }
 
-        wp_enqueue_script( 'stackedit', JADE_URL . '/assets/stackedit/stackedit.min.js' );
+        wp_enqueue_script('stackedit', JADE_URL . '/assets/stackedit/stackedit.min.js');
         //wp_enqueue_style( 'simplemde-css', PLUGIN_URL . 'assets/styles/simplemde.min.css' );
 
     }
@@ -165,25 +166,29 @@ class Markdown_Editor
         }
         ?>
         <script type="text/javascript">
-            // 初始化编辑器
-            const el = document.getElementById( 'content' );
-            const stackedit = new Stackedit();
+            "use strict";
+            window.onload = function () {
+                // 初始化编辑器
+                var el = document.getElementById('content');
+                var stackedit = new Stackedit({
+                    url: 'http://192.168.1.6:8080/app'
+                },true);
 
-            // 打开iframe
-            stackedit.openFile({
-                name: 'Filename', // TODO 初始化文章名
-                content: {
-                    text: el.value
-                }
-            },true);
+                // 打开iframe
+                stackedit.openFile({
+                    name: "Filename", // TODO 初始化文章名
+                    content: {
+                        text: el.value
+                    }
+                });
 
-            // 监听stackedit事件并将更改应用到textarea
-            stackedit.on('fileChange', (file) => {
-                //el.value = file.content.text;
-                el.innerHTML = file.content.html;
-                //el.value = file.content.text;
-            });
-            console.log("编辑器加载成功");
+                // 监听stackedit事件并将更改应用到textarea
+                stackedit.on("fileChange", function (file) {
+                    //el.value = file.content.text;
+                    el.innerHTML = file.content.html;
+                });
+                console.log("编辑器加载成功");
+            }
         </script>
         <?php
     }
@@ -220,5 +225,14 @@ class Markdown_Editor
         }
 
         return $default;
+    }
+
+    /**
+     * 加载编辑器默认选择文本框
+     *
+     * @return string 'html' or 'tinymce'
+     */
+    function jade_default_editor() {
+        return 'html';
     }
 }
