@@ -25,20 +25,18 @@ define('JADE_URL', plugins_url('', __FILE__)); //资源路径
 
 // 检查并且加载Jetpack模块
 if (!class_exists('WPCom_Markdown')) {
-    require_once JADE_DIR . '/includes/class/Easy_Markdown.php';
+    require_once JADE_DIR . '/includes/class-markdown/Easy_Markdown.php';
 }
 
 // 检查并且加载Markdown类
 if (!class_exists('Markdown_Editor')) {
-    require_once JADE_DIR . '/includes/class/Markdown_Editor.php';
+    require_once JADE_DIR . '/includes/class-markdown/Markdown_Editor.php';
 }
 
 // 检查并且加载后台选项框架
 if (!function_exists('optionsframework_init')) {
     require_once JADE_DIR . '/includes/options/options-framework.php';
 }
-
-//echo jade_get_option('example_text_mini');
 
 // 获取类实例
 Markdown_Editor::get_instance();

@@ -43,7 +43,7 @@ class Markdown_Editor
         add_filter('user_can_richedit', array($this, 'disable_rich_editing'));
 
         // 加载前端静态资源
-        add_action('wp_enqueue_scripts', array($this, 'highlight_scripts_styles'));
+        //add_action('wp_enqueue_scripts', array($this, 'frontend_scripts_styles'));
 
         // 加载Jetpack Markdown模块
         $this->load_jetpack_markdown_module();
@@ -85,7 +85,7 @@ class Markdown_Editor
     }
 
     /**
-     * 队列加载脚本和样式
+     * 在后台页面加载脚本和样式
      *
      * @since 0.1
      * @return void
@@ -97,15 +97,18 @@ class Markdown_Editor
             return;
         }
 
+        wp_enqueue_script( 'stackedit', JADE_URL . '/assets/stackedit/stackedit.min.js' );
+        //wp_enqueue_style( 'simplemde-css', PLUGIN_URL . 'assets/styles/simplemde.min.css' );
+
     }
 
     /**
-     * 预加载编辑器脚本和样式
+     * 在前端页面加载脚本和样式
      *
      * @since 0.1
      * @return void
      */
-    function highlight_scripts_styles() {
+    function frontend_scripts_styles() {
 
         // 仅在文章/页面类型列队加载
         if (!is_single()) {
@@ -163,7 +166,24 @@ class Markdown_Editor
         ?>
         <script type="text/javascript">
             // 初始化编辑器
+            const el = document.getElementById( 'content' );
+            const stackedit = new Stackedit();
 
+            // 打开iframe
+            stackedit.openFile({
+                name: 'Filename', // TODO 初始化文章名
+                content: {
+                    text: el.value
+                }
+            },true);
+
+            // 监听stackedit事件并将更改应用到textarea
+            stackedit.on('fileChange', (file) => {
+                //el.value = file.content.text;
+                el.innerHTML = file.content.html;
+                //el.value = file.content.text;
+            });
+            console.log("编辑器加载成功");
         </script>
         <?php
     }

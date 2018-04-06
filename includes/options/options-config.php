@@ -5,7 +5,7 @@
  */
 function optionsframework_option_name() {
 	// Change this to use your theme slug
-	return 'options-framework-theme';
+	return 'wp-jade-md-options';
 }
 
 /**
@@ -13,19 +13,54 @@ function optionsframework_option_name() {
  * @param $menu
  * @return mixed
  */
-function optionsframework_menu_example( $menu ) {
+function jade_optionsframework_menu( $menu ) {
     // Modes: submenu, menu
     $menu['mode'] = 'submenu';
     // Submenu default settings
-    $menu['page_title'] = 'Plugin Options';
-    $menu['menu_title'] = 'Plugin Options';
+    $menu['page_title'] = 'WordPress Jade Markdown Options';
+    $menu['menu_title'] = 'WP Jade.md';
     $menu['capability'] = 'edit_plugins';
-    $menu['menu_slug'] = 'options-framework';
-    $menu['parent_slug'] = 'edit.php?post_type=page';
+    $menu['menu_slug'] = 'wp-jade.md-options';
+    $menu['parent_slug'] = 'plugins.php';
 
     return $menu;
 };
-add_filter( 'optionsframework_menu', 'optionsframework_menu_example');
+add_filter( 'optionsframework_menu', 'jade_optionsframework_menu');
+
+/**
+ *辅助函数返回主题选项值。
+ *如果未保存任何值，则返回 $default。
+ *因为选项需要被保存为序列化的字符串。
+ *
+ *不支持向下兼容主题。
+ */
+if ( ! function_exists( 'j_opt' ) ) :
+    function j_opt( $name, $default = false ) {
+
+        $option_name = '';
+
+        // Gets option name as defined in the theme
+        if ( function_exists( 'optionsframework_option_name' ) ) {
+            $option_name = optionsframework_option_name();
+        }
+
+        // Fallback option name
+        if ( '' == $option_name ) {
+            $option_name = get_option( 'stylesheet' );
+            $option_name = preg_replace( "/\W/", "_", strtolower( $option_name ) );
+        }
+
+        // Get option settings from database
+        $options = get_option( $option_name );
+
+        // Return specific option
+        if ( isset( $options[$name] ) ) {
+            return $options[$name];
+        }
+
+        return $default;
+    }
+endif;
 
 /**
  * Defines an array of options that will be used to generate the settings page and be saved in the database.
