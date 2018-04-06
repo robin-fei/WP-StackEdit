@@ -46,6 +46,8 @@ class Markdown_Editor {
         // 加载前端静态资源
         //add_action('wp_enqueue_scripts', array($this, 'frontend_scripts_styles'));
 
+        add_action( 'post_submitbox_misc_actions', array($this, 'jade_submitbox_misc_actions') );
+
         // 加载Jetpack Markdown模块
         $this->load_jetpack_markdown_module();
 
@@ -98,9 +100,11 @@ class Markdown_Editor {
             return;
         }
 
-        wp_enqueue_script('stackedit', JADE_URL . '/assets/stackedit/stackedit.min.js');
-        //wp_enqueue_style( 'simplemde-css', PLUGIN_URL . 'assets/styles/simplemde.min.css' );
+        wp_enqueue_script( 'stackedit-js', JADE_URL . '/assets/stackedit/stackedit.min.js',array(),JADE_VERSION,false );
+        wp_enqueue_script( 'jade-js', JADE_URL . '/assets/jade/jade.js',array(),JADE_VERSION,false );
 
+        wp_enqueue_style( 'typo-css', JADE_URL . '/assets/typo/typo.css',array(),JADE_VERSION,'all' );
+        wp_enqueue_style( 'jade-css', JADE_URL . '/assets/jade/jade.css',array(),JADE_VERSION,'all' );
     }
 
     /**
@@ -165,30 +169,37 @@ class Markdown_Editor {
             return;
         }
         ?>
-        <script type="text/javascript">
+        <script type="text/javascript" defer="defer">
             "use strict";
-            window.onload = function () {
-                // 初始化编辑器
-                var el = document.getElementById('content');
-                var stackedit = new Stackedit({
-                    url: 'http://192.168.1.6:8080/app'
-                },true);
+            (function ($,doc,win) {
+                $(doc).ready(function () {
+                    // 初始化编辑器
+                    var el = doc.getElementById('content');
+                    var stackedit = new Stackedit({
+                        url: 'http://192.168.1.6:8080/app'
+                    },true);
 
-                // 打开iframe
-                stackedit.openFile({
-                    name: "Filename", // TODO 初始化文章名
-                    content: {
-                        text: el.value
-                    }
-                });
+                    // 打开iframe
+                    stackedit.openFile({
+                        name: "Filename", // TODO 初始化文章名
+                        content: {
+                            text: el.value
+                        }
+                    });
 
-                // 监听stackedit事件并将更改应用到textarea
-                stackedit.on("fileChange", function (file) {
-                    //el.value = file.content.text;
-                    el.innerHTML = file.content.html;
+                    // 监听stackedit事件并将更改应用到textarea
+                    stackedit.on("fileChange", function (file) {
+                        el.value = file.content.text;
+                        //el.innerHTML = file.content.html;
+                    });
+
+                    var editStatus = $('#stackedit-status');
+                    editStatus.click(function () {
+
+                    });
+                    console.log("编辑器加载成功");
                 });
-                console.log("编辑器加载成功");
-            }
+            })(jQuery,document,window);
         </script>
         <?php
     }
@@ -216,7 +227,7 @@ class Markdown_Editor {
      *
      * @since  0.1
      * @param  array $default Default post types.
-     * @return array
+     * @return array|bool
      */
     function disable_rich_editing($default) {
 
@@ -234,5 +245,20 @@ class Markdown_Editor {
      */
     function jade_default_editor() {
         return 'html';
+    }
+
+    /**
+     * 自定义按钮
+     *
+     * @param $post
+     */
+    function jade_submitbox_misc_actions($post){
+        ?>
+        <div class="misc-pub-section stackedit-status">
+            <span class="dashicons dashicons-editor-code"></span>
+            <span class="stackedit-title">StackEdit: </span>
+            <a href="javascript:" id="stackedit-status"><?php _e( '禁用状态' ) ?></a>
+        </div>
+        <?php
     }
 }

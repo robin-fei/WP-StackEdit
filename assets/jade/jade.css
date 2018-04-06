@@ -1,0 +1,8 @@
+#stackedit-template {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 337px;
+    z-index: 9999;
+    background:#eee;
+}
