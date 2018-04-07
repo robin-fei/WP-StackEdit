@@ -39,6 +39,11 @@ class Markdown_Editor {
 
         add_action( 'post_submitbox_misc_actions', array($this, 'jade_submitbox_misc_actions') );
 
+	    //插件通知
+	    add_action('admin_notices', array($this, 'jade_notice'));
+	    //插件通知
+	    add_action('admin_init', array($this, 'jade_notice_ignore'));
+
     }
 
     /**
@@ -120,4 +125,31 @@ class Markdown_Editor {
         </div>
         <?php
     }
+
+	/**
+	 * 通知显示
+	 */
+	public function jade_notice() {
+		global $pagenow;
+		if ( !is_multisite() && ( $pagenow == 'plugins.php' || $pagenow == 'themes.php' ) ) {
+			global $current_user ;
+			$user_id = $current_user->ID;
+			if ( ! get_user_meta($user_id, 'jade_ignore_notice') ) {
+				echo '<div class="updated jade_setup_nag"><p>';
+				printf( __('Please Update Your Favorite Options In Settings.  <a href="%1$s" target="_blank">Options</a> | <a href="%2$s">Hide Notice</a>', 'wp-stackedit-options' ), admin_url('plugins.php?page=wp-stackedit-options'), '?optionsframework_nag_ignore=0');
+				echo "</p></div>";
+			}
+		}
+	}
+
+	/**
+	 * 允许用户隐藏通知
+	 */
+	public function jade_notice_ignore() {
+		global $current_user;
+		$user_id = $current_user->ID;
+		if ( isset( $_GET['jade_nag_ignore'] ) && '0' == $_GET['jade_nag_ignore'] ) {
+			add_user_meta( $user_id, 'jade_ignore_notice', 'true', true );
+		}
+	}
 }
