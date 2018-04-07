@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: WP Jade Markdown
- * Plugin URI:
- * Description:
+ * Plugin Name: WP StackEdit
+ * Plugin URI:  https://github.com/JaxsonWang/WP-StackEdit
+ * Description: Add StackEdit To WordPress
  * Version:     0.1
  * Author:      淮城一只猫
  * Author URI:  https://www.iiong.com
@@ -22,11 +22,6 @@ define('JADE_VERSION', '0.1');
 define('MINIMUM_WP_VERSION', '4.8');
 define('JADE_DIR', dirname(__FILE__)); //相对路径
 define('JADE_URL', plugins_url('', __FILE__)); //资源路径
-
-// 检查并且加载Jetpack模块
-if (!class_exists('WPCom_Markdown')) {
-    require_once JADE_DIR . '/includes/class-markdown/Easy_Markdown.php';
-}
 
 // 检查并且加载Markdown类
 if (!class_exists('Markdown_Editor')) {

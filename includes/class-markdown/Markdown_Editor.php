@@ -28,18 +28,9 @@ class Markdown_Editor {
      */
     private function __construct() {
 
-        // 添加默认文章类型支持
-        add_post_type_support('post', 'wpcom-markdown');
-
         // 加载Markdown编辑器
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts_styles'));
-        add_action('admin_footer', array($this, 'init_editor'));
-
-        // 删除快速标签按钮.
-        //add_filter('quicktags_settings', array($this, 'quicktags_settings'), 'content');
-
-        // 删除富文本编辑器
-        //add_filter('user_can_richedit', array($this, 'disable_rich_editing'));
+        add_action('edit_form_advanced', array($this, 'enqueue_scripts_styles'));
+        add_action('edit_page_form', array($this, 'enqueue_scripts_styles'));
 
         add_filter( 'wp_default_editor', array($this, 'jade_default_editor') );
 
@@ -47,9 +38,6 @@ class Markdown_Editor {
         //add_action('wp_enqueue_scripts', array($this, 'frontend_scripts_styles'));
 
         add_action( 'post_submitbox_misc_actions', array($this, 'jade_submitbox_misc_actions') );
-
-        // 加载Jetpack Markdown模块
-        $this->load_jetpack_markdown_module();
 
     }
 
@@ -78,33 +66,24 @@ class Markdown_Editor {
     }
 
     /**
-     * 过滤Markdown文章类型
-     *
-     * @since  0.1
-     * @return bool
-     */
-    function get_post_type() {
-        return get_current_screen()->post_type;
-    }
-
-    /**
      * 在后台页面加载脚本和样式
      *
      * @since 0.1
      * @return void
      */
     function enqueue_scripts_styles() {
-
-        // 仅在指定的文章类型中列队加载
-        if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
-            return;
-        }
-
         wp_enqueue_script( 'stackedit-js', JADE_URL . '/assets/stackedit/stackedit.min.js',array(),JADE_VERSION,false );
+        wp_enqueue_script( 'turndown-js', JADE_URL . '/assets/turndown/turndown.js',array(),JADE_VERSION,false );
         wp_enqueue_script( 'jade-js', JADE_URL . '/assets/jade/jade.js',array(),JADE_VERSION,false );
 
         wp_enqueue_style( 'typo-css', JADE_URL . '/assets/typo/typo.css',array(),JADE_VERSION,'all' );
         wp_enqueue_style( 'jade-css', JADE_URL . '/assets/jade/jade.css',array(),JADE_VERSION,'all' );
+
+	    $jadeData = array(
+		    'stackEditUrl' => j_opt('stackedit_url'),
+		    'openEdit' => j_opt('load_stackedit')
+	    );
+	    wp_localize_script( 'jade-js', 'jade', $jadeData );
     }
 
     /**
@@ -114,128 +93,8 @@ class Markdown_Editor {
      * @return void
      */
     function frontend_scripts_styles() {
-
-        // 仅在文章/页面类型列队加载
-        if (!is_single()) {
-            return;
-        }
-
         //预加载编辑器资源
 
-    }
-
-    /**
-     * 加载Jetpack Markdown模块
-     *
-     * @since 0.1
-     * @return void
-     */
-    function load_jetpack_markdown_module() {
-
-        // 如果模块处于活动状态，将其激活以发布，评论仍然是可选的
-        if (class_exists('Easy_Markdown')) {
-            add_filter('pre_option_' . Easy_Markdown::POST_OPTION, '__return_true');
-        }
-        add_action('admin_init', array($this, 'jetpack_markdown_posting_always_on'), 11);
-
-    }
-
-    /**
-     * 将Jetpack写作模式设置为始终开启。
-     *
-     * @since 0.1
-     * @return void
-     */
-    function jetpack_markdown_posting_always_on() {
-        if (!class_exists('Easy_Markdown')) {
-            return;
-        }
-        global $wp_settings_fields;
-        if (isset($wp_settings_fields['writing']['default'][Easy_Markdown::POST_OPTION])) {
-            unset($wp_settings_fields['writing']['default'][Easy_Markdown::POST_OPTION]);
-        }
-    }
-
-    /**
-     * 初始化编辑器
-     *
-     * @since 0.1
-     * @return void
-     */
-    function init_editor() {
-
-        // 仅在指定的文章类型中初始化
-        if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
-            return;
-        }
-        ?>
-        <script type="text/javascript" defer="defer">
-            "use strict";
-            (function ($,doc,win) {
-                $(doc).ready(function () {
-                    // 初始化编辑器
-                    var el = doc.getElementById('content');
-                    var stackedit = new Stackedit({
-                        url: 'http://192.168.1.6:8080/app'
-                    },true);
-
-                    // 打开iframe
-                    stackedit.openFile({
-                        name: "Filename", // TODO 初始化文章名
-                        content: {
-                            text: el.value
-                        }
-                    });
-
-                    // 监听stackedit事件并将更改应用到textarea
-                    stackedit.on("fileChange", function (file) {
-                        el.value = file.content.text;
-                        //el.innerHTML = file.content.html;
-                    });
-
-                    var editStatus = $('#stackedit-status');
-                    editStatus.click(function () {
-
-                    });
-                    console.log("编辑器加载成功");
-                });
-            })(jQuery,document,window);
-        </script>
-        <?php
-    }
-
-    /**
-     * 快速标签设置
-     *
-     * @since 0.1
-     * @param  array $qt_init Quick tag args.
-     * @return array
-     */
-    function quicktags_settings($qt_init) {
-
-        // Only remove buttons on specified post types.
-        if (!post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
-            return $qt_init;
-        }
-
-        $qt_init['buttons'] = ' ';
-        return $qt_init;
-    }
-
-    /**
-     * 禁用富文本编辑器
-     *
-     * @since  0.1
-     * @param  array $default Default post types.
-     * @return array|bool
-     */
-    function disable_rich_editing($default) {
-
-        if (post_type_supports($this->get_post_type(), 'wpcom-markdown')) {
-            return false;
-        }
-
-        return $default;
     }
 
     /**

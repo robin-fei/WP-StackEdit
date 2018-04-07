@@ -300,8 +300,3 @@
 #stackedit-template .textwrap-table {
   table-layout: fixed;
 }
-
-/* 提供 serif 版本的字体设置: iOS 下中文自动 fallback 到 sans-serif */
-#stackedit-template .serif {
-  font-family: Palatino, Optima, Georgia, serif;
-}

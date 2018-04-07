@@ -22,7 +22,7 @@ if (is_admin() && ! function_exists( 'optionsframework_init' ) ) :
         }
 
         // Load translation files
-        load_plugin_textdomain( 'options-framework', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        load_plugin_textdomain( 'wp-stackedit', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
         // Loads the required Options Framework classes.
         require OPTIONS_FRAMEWORK_DIR . '/includes/class-options-framework.php';
