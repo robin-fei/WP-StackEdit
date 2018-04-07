@@ -1,10 +1,15 @@
 (function ($, doc, win) {
     $(doc).ready(function () {
         //声明to markdown
-        var turndownService = new TurndownService();
+        var options = {
+            codeBlockStyle: "fenced",
+            fence: "```"
+        };
+        var turndownService = new window.TurndownService(options);
         var toolbar = $('#ed_toolbar');
         var content = $('#content');
-        var htmlSrc = content.val();
+        var htmlSrc = content.val();//.replace(/(\n){1,}/g,'').replace(/(\r\n){1,}/g,'');
+        console.log(htmlSrc);
 
         //插入渲染模板
         toolbar.before('<div id="stackedit-template"></div>');
@@ -14,8 +19,8 @@
          * @returns boolean
          */
         function htmlTpl() {
-            $('#stackedit-template').html(content.val().replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '));
-            return false;
+            //$('#stackedit-template').html(content.val().replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' '));
+            $('#stackedit-template').html(htmlSrc);
         }
 
         /**
@@ -41,6 +46,7 @@
             //打开编辑器执行的操作
             stackedit.on("fileChange", function onFileChange(file) {
                 content[0].innerHTML = file.content.html;
+                $('#stackedit-template').html(file.content.html);
             });
 
             //关闭编辑器执行的操作
@@ -54,7 +60,6 @@
         //执行操作
         htmlTpl();
         jade.openEdit === '1' ? openStackedit(false) : openStackedit(true);
-
 
         //点击StackEdit按钮事件
         doc.getElementById('stackedit-status').addEventListener('click',function onClick() {
