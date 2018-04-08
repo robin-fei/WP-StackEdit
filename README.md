@@ -4,6 +4,8 @@ Thanks to the author of [StackEdit](https://github.com/benweet/stackedit.js) for
 
 More info read to [readme.txt](readme.txt)
 
+**Now in the testing phase, please use it carefully online**
+
 ### License
 
 ![GPLv3](https://www.gnu.org/graphics/gplv3-127x51.png)

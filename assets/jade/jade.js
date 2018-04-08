@@ -35,7 +35,7 @@
 
             //打开编辑器执行的配置
             stackedit.openFile({
-                    name: "HTML with StackEdit",
+                    name: $('#title').val(),
                     content: {
                         text: turndownService.turndown(htmlSrc)
                     }
@@ -45,6 +45,7 @@
 
             //打开编辑器执行的操作
             stackedit.on("fileChange", function onFileChange(file) {
+                document.getElementById('title').value = file.name;
                 content[0].innerHTML = file.content.html;
                 $('#stackedit-template').html(file.content.html);
             });
