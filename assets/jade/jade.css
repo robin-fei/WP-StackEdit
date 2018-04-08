@@ -6,6 +6,7 @@
     z-index: 1000;
     padding: 20px 2%;
     overflow-y: auto;
+    display: none;
 }
 
 #stackedit-template::-webkit-scrollbar {
@@ -15,5 +16,5 @@
 /*隐藏文本编辑器和富文本编辑器*/
 #content_ifr,
 #content {
-    display: none;
+    display: block;
 }

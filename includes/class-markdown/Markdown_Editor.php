@@ -121,7 +121,7 @@ class Markdown_Editor {
         <div class="misc-pub-section stackedit-status">
             <span class="dashicons dashicons-editor-code"></span>
             <span class="stackedit-title">StackEdit: </span>
-            <a href="javascript:" id="stackedit-status"><?php _e( '禁用状态' ) ?></a>
+            <a href="javascript:" id="stackedit-status"><?php _e( 'Disabled' ) ?></a>
         </div>
         <?php
     }
