@@ -47,7 +47,7 @@
         function openStackedit(isOpen) {
             //声明编辑器并且初始化配置
             var stackedit = new Stackedit({
-                url: jade.stackEditUrl
+                url: stackedit.stackEditUrl
             });
 
             //打开编辑器执行的配置
@@ -86,7 +86,7 @@
 
         //执行操作
         htmlTpl();
-        jade.openEdit === '1' ? openStackedit(false) : '';
+        stackedit.openEdit === '1' ? openStackedit(false) : '';
 
         //点击StackEdit按钮事件
         doc.getElementById('stackedit-status').addEventListener('click',function onClick() {

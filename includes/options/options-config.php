@@ -8,7 +8,7 @@ function optionsframework_option_name() {
  * @param $menu
  * @return mixed
  */
-function jade_optionsframework_menu( $menu ) {
+function stackedit_optionsframework_menu( $menu ) {
     // Modes: submenu, menu
     $menu['mode'] = 'submenu';
     // Submenu default settings
@@ -20,7 +20,7 @@ function jade_optionsframework_menu( $menu ) {
 
     return $menu;
 };
-add_filter( 'optionsframework_menu', 'jade_optionsframework_menu');
+add_filter( 'optionsframework_menu', 'stackedit_optionsframework_menu');
 
 /**
  *辅助函数返回主题选项值。
