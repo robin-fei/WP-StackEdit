@@ -49,6 +49,9 @@ class stackedit_init {
 		//添加插件设置链接
 		add_filter( 'plugin_action_links_' . STACKEDIT_NAME, array( $this, 'stackedit_settings_link' ), 10, 5 );
 		add_filter( 'plugin_row_meta', array( $this, 'stackedit_plugin_row_meta' ), 10, 2 );
+
+		//停用激活的函数
+		register_deactivation_hook( STACKEDIT_NAME, array($this, 'stackedit_deactivation') );
 	}
 
 	/**
@@ -180,7 +183,7 @@ class stackedit_init {
 			$user_id = $current_user->ID;
 			if ( ! get_user_meta( $user_id, 'stackedit_ignore_notice' ) ) {
 				echo '<div class="updated stackedit_setup_nag"><p>';
-				printf( __( 'Please Update Your Favorite Options In Settings.  <a href="%1$s" target="_blank">Options</a> | <a href="%2$s">Hide Notice</a>', 'wp-stackedit-options' ), admin_url( 'plugins.php?page=wp-stackedit-options' ), '?optionsframework_nag_ignore=0' );
+				printf( __( 'Please Update Your Favorite Options In Settings.  <a href="%1$s" target="_blank">Options</a> | <a href="%2$s">Hide Notice</a>', 'wp-stackedit-options' ), admin_url( 'plugins.php?page=wp-stackedit-options' ), '?stackedit_nag_ignore=0' );
 				echo "</p></div>";
 			}
 		}
@@ -197,4 +200,13 @@ class stackedit_init {
 		}
 	}
 
+	/**
+	 * 停用插件激活的函数
+     * 删除usermeta表信息：stackedit_ignore_notice
+	 */
+	public function stackedit_deactivation() {
+		global $current_user;
+		$user_id = $current_user->ID;
+		delete_user_meta( $user_id, 'stackedit_ignore_notice','true' );
+    }
 }
