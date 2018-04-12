@@ -12,4 +12,4 @@ if (
 }
 
 // Delete all compact options
-delete_option( 'wp-stackedit-options' );
+delete_option( STACKEDIT_OPTION_NAME );

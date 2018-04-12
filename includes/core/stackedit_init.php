@@ -21,6 +21,10 @@ class stackedit_init {
 	 */
 	private static $instance;
 
+	public function opt($name) {
+		return get_option( STACKEDIT_OPTION_NAME )[$name];
+    }
+
 	/**
 	 * 设置Markdown编辑器.
 	 *
@@ -52,6 +56,9 @@ class stackedit_init {
 
 		//停用激活的函数
 		register_deactivation_hook( STACKEDIT_NAME, array($this, 'stackedit_deactivation') );
+
+		// Save/Update our plugin options
+		add_action( 'init', array(new stackedit_admin(), 'create_menu') );
 	}
 
 	/**
@@ -84,7 +91,7 @@ class stackedit_init {
 	 * @since 0.1
 	 * @return void
 	 */
-	function enqueue_scripts_styles() {
+	public function enqueue_scripts_styles() {
 		wp_enqueue_script( 'stackedit-js', STACKEDIT_URL . '/assets/stackedit/stackedit.min.js', array(), STACKEDIT_VERSION, false );
 		wp_enqueue_script( 'turndown-js', STACKEDIT_URL . '/assets/turndown/turndown.js', array(), STACKEDIT_VERSION, false );
 		wp_enqueue_script( 'jade-js', STACKEDIT_URL . '/assets/jade/jade.js', array(), STACKEDIT_VERSION, false );
@@ -93,8 +100,8 @@ class stackedit_init {
 		wp_enqueue_style( 'jade-css', STACKEDIT_URL . '/assets/jade/jade.css', array(), STACKEDIT_VERSION, 'all' );
 
 		$stackeditData = array(
-			'stackEditUrl' => j_opt( 'stackedit_url' ),
-			'openEdit'     => j_opt( 'load_stackedit' )
+			'stackEditUrl' => $this->opt( 'stackedit_url' ),
+			'openEdit'     => $this->opt( 'load_stackedit' )
 		);
 		wp_localize_script( 'jade-js', 'stackedit', $stackeditData );
 	}
@@ -106,10 +113,9 @@ class stackedit_init {
 	 *
 	 * @return array
 	 */
-	function stackedit_settings_link( $actions ) {
+	public function stackedit_settings_link( $actions ) {
 		return array_merge(
 			array(
-				'<a href="' . admin_url( 'plugins.php?page=wp-stackedit-options' ) . '">' . __( 'Settings', 'stackedit' ) . '</a>',
 				'<a href="https://github.com/JaxsonWang/WP-StackEdit" target="_blank" rel="nofollow">' . __( 'Github', 'stackedit' ) . '</a>',
 				'<a href="https://stackedit.io" target="_blank" rel="nofollow">' . __( 'WebStie', 'stackedit' ) . '</a>',
 			),
