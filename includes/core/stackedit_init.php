@@ -54,11 +54,15 @@ class stackedit_init {
 		add_filter( 'plugin_action_links_' . STACKEDIT_NAME, array( $this, 'stackedit_settings_link' ), 10, 5 );
 		add_filter( 'plugin_row_meta', array( $this, 'stackedit_plugin_row_meta' ), 10, 2 );
 
-		//停用激活的函数
-		register_deactivation_hook( STACKEDIT_NAME, array($this, 'stackedit_deactivation') );
-
-		// Save/Update our plugin options
+		//创建插件菜单
 		add_action( 'init', array(new stackedit_admin(), 'create_menu') );
+
+		//启用激活的函数
+		register_activation_hook( STACKEDIT_NAME, array($this, 'stackedit_activate') );
+
+		//停用激活的函数
+		register_deactivation_hook( STACKEDIT_NAME, array($this, 'stackedit_deactivator') );
+
 	}
 
 	/**
@@ -99,9 +103,12 @@ class stackedit_init {
 		wp_enqueue_style( 'typo-css', STACKEDIT_URL . '/assets/typo/typo.css', array(), STACKEDIT_VERSION, 'all' );
 		wp_enqueue_style( 'jade-css', STACKEDIT_URL . '/assets/jade/jade.css', array(), STACKEDIT_VERSION, 'all' );
 
+		$stackedit_url = $this->opt( 'stackedit_url' );
+		$load_stackedit   = $this->opt( 'load_stackedit' );
+
 		$stackeditData = array(
-			'stackEditUrl' => $this->opt( 'stackedit_url' ),
-			'openEdit'     => $this->opt( 'load_stackedit' )
+			'stackEditUrl' => isset( $stackedit_url ) ? $stackedit_url : 'https://stackedit.io/app',
+			'openEdit'     => isset( $load_stackedit ) ? $load_stackedit : 'no'
 		);
 		wp_localize_script( 'jade-js', 'stackedit', $stackeditData );
 	}
@@ -207,12 +214,19 @@ class stackedit_init {
 	}
 
 	/**
+	 * 启用插件激活的函数
+	 */
+	public function stackedit_activate() {
+		require_once STACKEDIT_DIR . '/includes/core/stackedit_activator.php';
+		stackedit_activator::activate();
+	}
+
+	/**
 	 * 停用插件激活的函数
      * 删除usermeta表信息：stackedit_ignore_notice
 	 */
-	public function stackedit_deactivation() {
-		global $current_user;
-		$user_id = $current_user->ID;
-		delete_user_meta( $user_id, 'stackedit_ignore_notice','true' );
+	public function stackedit_deactivator() {
+		require_once STACKEDIT_DIR . '/includes/core/stackedit_deactivator.php';
+		stackedit_deactivator::deactivator();
     }
 }

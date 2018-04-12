@@ -83,11 +83,11 @@ class stackedit_admin {
 					'title'       => esc_html__('Prism.js CDN addres',''),
 					'before'      => esc_html__('You cdn addres format must be is:"//example.com/prism/verison/"!Don\'t forget to end with a "/"',''),
 					'description' => esc_html__('You can customize the address',''),
-					'default'     => 'https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/',
+					'default'     => '//cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/',
 					'attributes'  => array(
 						'rows'        => 10,
 						'cols'        => 5,
-						'placeholder' => 'https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/',
+						'placeholder' => '//cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/',
 					)
 				),
 
