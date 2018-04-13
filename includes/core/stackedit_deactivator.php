@@ -1,5 +1,10 @@
 <?php
 
+// 如果直接调用该文件，则中止
+if (!defined('WPINC')) {
+	die;
+}
+
 class stackedit_deactivator {
 
 	public static function deactivator() {

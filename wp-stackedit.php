@@ -3,7 +3,7 @@
  * Plugin Name: WP StackEdit
  * Plugin URI:  https://github.com/JaxsonWang/WP-StackEdit
  * Description: Add StackEdit To WordPress
- * Version:     0.1
+ * Version:     0.4
  * Author:      淮城一只猫
  * Author URI:  https://www.iiong.com
  * License:     GPLv3 or later
@@ -18,7 +18,7 @@ if (!defined('WPINC')) {
 }
 
 // 定义常量
-define('STACKEDIT_VERSION', '0.1');
+define('STACKEDIT_VERSION', '0.4');
 define('MINIMUM_WP_VERSION', '4.8');
 define('STACKEDIT_NAME', plugin_basename( __FILE__ ) ); //插件名称
 define('STACKEDIT_DIR', dirname(__FILE__)); //相对路径
@@ -30,21 +30,17 @@ if (!class_exists( 'stackedit_init' )) {
     require_once STACKEDIT_DIR . '/includes/core/stackedit_init.php';
 }
 
-// 检查并且加载后台选项配置文件
-//if (!class_exists('stackedit_admin')) {
-//	require_once STACKEDIT_DIR . '/includes/core/stackedit_admin.php';
-//}
-
 // 检查并且加载后台选项框架
-//if (!class_exists('Exopite_Simple_Options_Framework')) {
-//	require_once STACKEDIT_DIR . '/includes/options/exopite-simple-options-framework-class.php';
-//}
+if (!class_exists('stackedit_options')) {
+	require_once STACKEDIT_DIR . '/includes/core/stackedit_options.php';
+}
 
-require_once STACKEDIT_DIR . '/includes/core/stackedit_options.php';
+// 检查并且加载语法高亮
+if (!class_exists('stackedit_prismjs')) {
+	require_once STACKEDIT_DIR . '/includes/core/stackedit_prismjs.php';
+}
 
-// 检查并且加载后台选项框架
-
-require_once STACKEDIT_DIR . '/includes/core/stackedit_prismjs.php';
-
-// 获取类实例
+// 实例化
 stackedit_init::get_instance();
+stackedit_options::get_instance();
+stackedit_prismjs::get_instance();

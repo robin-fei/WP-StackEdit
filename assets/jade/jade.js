@@ -11,6 +11,8 @@
 
         var stackEditUrl = stackedit.stackEditUrl;
         var openEdit = stackedit.openEdit;
+        var disabled = stackedit.disabled;
+        var enable = stackedit.enable;
 
         //插入渲染模板
         toolbar.before('<div id="stackedit-template"></div><div id="stackedit-close" class="dashicons-before dashicons-no-alt"></div>');
@@ -81,7 +83,7 @@
             //关闭编辑器执行的操作
             stackedit.on('close', function onClose(file) {
                 console.log('关闭编辑器');
-                doc.getElementById('stackedit-status').innerText = 'Disabled';
+                doc.getElementById('stackedit-status').innerText = disabled;
             });
 
         }
@@ -89,7 +91,7 @@
         //点击StackEdit按钮事件
         doc.getElementById('stackedit-status').addEventListener('click',function onClick() {
             openStackedit(false);
-            this.innerText = 'Enable';
+            this.innerText = enable;
 
             doc.getElementById('content-tmce').setAttribute('disabled','disabled');
             doc.getElementById('content-html').setAttribute('disabled','disabled');

@@ -1,10 +1,17 @@
 <?php
 
+// 如果直接调用该文件，则中止
+if (!defined('WPINC')) {
+	die;
+}
+
 /**
  * 语法高亮库
  * Class stackedit_prismjs
  */
 class stackedit_prismjs {
+
+	private static $instance;
 
 	public $languages = array();
 
@@ -587,6 +594,15 @@ class stackedit_prismjs {
 		return get_option( STACKEDIT_OPTION_NAME )[ $name ];
 	}
 
+	public static function get_instance() {
+		if ( ! isset( self::$instance ) ) {
+			$c              = __CLASS__;
+			self::$instance = new $c;
+		}
+
+		return self::$instance;
+	}
+
 	public function prism_languages( $content ) {
 		if ( preg_match_all( '/<code class="(.*?)language-([a-z\-0-9]+)"/', $content, $language_matches ) > 0 && ! empty( $language_matches[1] ) ) {
 			foreach ( $language_matches[2] as $language_match ) {
@@ -679,6 +695,3 @@ class stackedit_prismjs {
 		}
 	}
 }
-
-//实例化
-$prism = new stackedit_prismjs();

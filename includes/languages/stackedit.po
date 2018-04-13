@@ -1,0 +1,84 @@
+# Translation of WordPress - 4.8.x in LANGUAGE NAME
+# This file is distributed under the same license as the WordPress - 4.8.x package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: YYYY-MM-DD HR:MI:SE+ZONE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: LANGUAGE SHORT CODE\n"
+"Project-Id-Version: WordPress - 4.8.x\n"
+
+#: stackedit_init.php:110 stackedit_init.php:186
+msgid "Disabled"
+msgstr ""
+
+#: stackedit_init.php:111
+msgid "Enable"
+msgstr ""
+
+#: stackedit_init.php:126
+msgid "Settings"
+msgstr ""
+
+#: stackedit_init.php:127
+msgid "Github"
+msgstr ""
+
+#: stackedit_init.php:128
+msgid "Docs"
+msgstr ""
+
+#: stackedit_init.php:145
+msgid "Blog"
+msgstr ""
+
+#: stackedit_init.php:146
+msgid "Issues"
+msgstr ""
+
+#: stackedit_init.php:147
+msgid "StackEdit WebStie"
+msgstr ""
+
+#: stackedit_init.php:201
+msgid "Please Update Your Favorite Options In Settings.  <a href=\"%1$s\">Options</a> | <a href=\"%2$s\">Hide Notice</a>"
+msgstr ""
+
+#: stackedit_options.php:9 stackedit_options.php:10
+msgid "Wp StackEdit"
+msgstr ""
+
+#: stackedit_options.php:20
+msgid "Basic Options"
+msgstr ""
+
+#: stackedit_options.php:25
+msgid "Custom StackEdit URL"
+msgstr ""
+
+#: stackedit_options.php:28
+msgid "You can customize the address"
+msgstr ""
+
+#: stackedit_options.php:32
+msgid "Default loading StackEdit"
+msgstr ""
+
+#: stackedit_options.php:41
+msgid "Syntax Highlighter"
+msgstr ""
+
+#: stackedit_options.php:46
+msgid "Prism.js CDN addres"
+msgstr ""
+
+#: stackedit_options.php:52
+msgid "You cdn addres format must be is:\"//example.com/prism/verison/\"!Don't forget to end with a \"/\""
+msgstr ""
+
+#: stackedit_options.php:53
+msgid "Prism Theme Style"
+msgstr ""

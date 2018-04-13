@@ -57,13 +57,11 @@ if ( ! class_exists('NPF_Options')):
 			wp_enqueue_script( 'wp-color-picker');
 
 			// Framework Style
-			wp_enqueue_style( 'npf-framework-style', plugin_dir_url( __FILE__ ) . '/assets/css/npf.css' );
+			wp_enqueue_style( 'npf-framework-style', plugin_dir_url( __FILE__ ) . '/assets/css/main.min.css' );
 
 			wp_enqueue_script( 'npf-framework-tabs-script', plugin_dir_url( __FILE__ ) . '/assets/js/jquery.easytabs.min.js', array('jquery') );
 
-			wp_enqueue_script( 'npf-framework-timepicker', plugin_dir_url( __FILE__ ) . 'assets/js/jquery-ui-timepicker-addon.js', array('jquery','jquery-ui-core','jquery-ui-slider','jquery-ui-datepicker') );
-			wp_enqueue_script( 'npf-framework-script', plugin_dir_url( __FILE__ ) . 'assets/js/npf.js', array('jquery','jquery-ui-core','jquery-ui-slider','jquery-ui-datepicker','npf-framework-tabs-script','npf-framework-timepicker') );
-
+			wp_enqueue_script( 'npf-framework-script', plugin_dir_url( __FILE__ ) . 'assets/js/main.min.js', array('jquery','jquery-ui-core','jquery-ui-slider','jquery-ui-datepicker','npf-framework-tabs-script') );
 		}
 
 		function register_settings(){
