@@ -1,26 +1,28 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Textarea
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_textarea' ) ) {
+<?php
+if ( ! class_exists('npf_field_textarea')):
+	class npf_field_textarea extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'textarea';
 
-    class Exopite_Simple_Options_Framework_Field_textarea extends Exopite_Simple_Options_Framework_Fields {
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
-            parent::__construct( $field, $value, $unique, $where );
-        }
+		function render_field($args)
+		{
 
-        public function output() {
+			$rows = (isset($args['field']['rows'])) ? intval($args['field']['rows']) : 5 ;
+			$field_value = $this->get_value($args);
 
-            echo $this->element_before();
-            echo '<textarea name="'. $this->element_name() .'"'. $this->element_class() . $this->element_attributes() .'>'. $this->element_value() .'</textarea>';
-            echo $this->element_after();
+			echo '<textarea type="text" name="'.$args['field_name'].'" id="'.$args['field_id'].'" class="large-text code" rows="'.$rows.'" >';
+			echo esc_textarea($field_value);
+			echo '</textarea>';
 
-        }
+		}
 
-
-    }
-
-}
+	}
+endif;

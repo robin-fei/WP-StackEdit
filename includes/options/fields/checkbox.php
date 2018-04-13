@@ -1,44 +1,34 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Checkbox
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_checkbox' ) ) {
+<?php
+if ( ! class_exists('npf_field_checkbox')):
+	class npf_field_checkbox extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'checkbox';
 
-    class Exopite_Simple_Options_Framework_Field_checkbox extends Exopite_Simple_Options_Framework_Fields {
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
+		function render_field($args)
+		{
 
-            parent::__construct( $field, $value, $unique, $where );
-
-        }
-
-        public function output() {
-
-            echo $this->element_before();
-            $label = ( isset( $this->field['label'] ) ) ? $this->field['label'] : '';
-            $style = ( isset( $this->field['style'] ) ) ? $this->field['style'] : '';
-
-            switch ( $style ) {
-                case 'fancy':
-                    echo '<label class="checkbox">';
-                    echo '<input type="checkbox" class="checkbox__input" name="'. $this->element_name() .'" value="yes"'. $this->element_attributes() . checked( $this->element_value(), 'yes', false ) .'>';
-                    echo '<div class="checkbox__checkmark"></div>';
-                    echo $label;
-                    echo '</label>';
-                    break;
-
-                default:
-                    echo '<label><input type="checkbox" name="'. $this->element_name() .'" value="yes"'. $this->element_class() . $this->element_attributes() . checked( $this->element_value(), 'yes', false ) .'/> '. $label .'</label>';
-                    break;
-            }
+			if (isset($args['field']['choices'])) {
+				foreach ($args['field']['choices'] as $key => $choice) {
+					$checked_text = '';
+					if (is_array($args['field_value']) && in_array($key, $args['field_value'])) {
+						$checked_text = ' checked="checked" ';
+					}
+					echo '<input type="checkbox" name="'.$args['field_name'].'[]" id="'.$args['field_id'].'-'.esc_attr($key).'" '.$checked_text.' value="'.esc_attr($key).'" class="stylish-checkbox" />';
+					echo '<label for="'.$args['field_id'].'-'.esc_attr($key).'">'.$choice.'</label><br />';
+				}
+			}
 
 
-            echo $this->element_after();
+		}
 
-        }
+	}
 
-    }
-
-}
+endif;

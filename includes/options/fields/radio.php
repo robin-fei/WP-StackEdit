@@ -1,77 +1,29 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Radio
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_radio' ) ) {
+<?php
+if ( ! class_exists('npf_field_radio')):
+	class npf_field_radio extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'radio';
 
-    class Exopite_Simple_Options_Framework_Field_radio extends Exopite_Simple_Options_Framework_Fields {
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
-            parent::__construct( $field, $value, $unique, $where );
-        }
 
-        public function output(){
+		function render_field($args)
+		{
+			$field_value = $this->get_value($args);
+			if (isset($args['field']['choices'])) {
+				foreach ($args['field']['choices'] as $key => $choice) {
+					echo '<input type="radio" name="'.$args['field_name'].'" id="'.$args['field_id'].'-'.esc_attr($key).'" '.checked( $field_value, $key, false).' value="'.esc_attr($key).'" class="stylish-radio" />';
+					echo '<label for="'.$args['field_id'].'-'.esc_attr($key).'">'.$choice.'</label>';
+				}
+			}
 
-            $classes = ( isset( $this->field['class'] ) ) ? implode( ' ', explode( ' ', $this->field['class'] ) ) : '';
+		}
 
-            echo $this->element_before();
-
-            if( isset( $this->field['options'] ) ) {
-
-                $options = $this->field['options'];
-                $options = ( is_array( $options ) ) ? $options : array_filter( $this->element_data( $options ) );
-                $style = ( isset( $this->field['style'] ) ) ? $this->field['style'] : '';
-
-                if( ! empty( $options ) ) {
-
-                    echo '<ul'. $this->element_class() .'>';
-                    foreach ( $options as $key => $value ) {
-
-                        switch ( $style ) {
-                            case 'fancy':
-                                echo '<li>';
-                                echo '<label class="radio-button ' . $classes . '">';
-                                echo '<input type="radio" class="radio-button__input" name="'. $this->element_name() .'" value="'. $key .'"'. $this->element_attributes( $key ) . $this->checked( $this->element_value(), $key ) .'>';
-                                echo '<div class="radio-button__checkmark"></div>';
-                                echo $value;
-                                echo '</label>';
-                                echo '</li>';
-                                break;
-
-                            default:
-                                echo '<li><label><input type="radio" name="'. $this->element_name() .'" value="'. $key .'"'. $this->element_attributes( $key ) . $this->checked( $this->element_value(), $key ) .'/> '. $value .'</label></li>';
-                                break;
-                        }
-
-                    }
-                    echo '</ul>';
-                }
-
-            } else {
-                $label = ( isset( $this->field['label'] ) ) ? $this->field['label'] : '';
-
-                switch ( $this->field['style'] ) {
-                    case 'fancy':
-                        echo '<label class="radio-button ' . $classes . '">';
-                        echo '<input type="radio" class="radio-button__input" name="'. $this->element_name() .'"'. $this->element_attributes() . checked( $this->element_value(), 1, false ) .'>';
-                        echo '<div class="radio-button__checkmark"></div>';
-                        echo $label;
-                        echo '</label>';
-                        break;
-
-                    default:
-                        echo '<label><input type="radio" name="'. $this->element_name() .'" value="1"'. $this->element_class() . $this->element_attributes() . checked( $this->element_value(), 1, false ) .'/> '. $label .'</label>';
-                        break;
-                }
-
-            }
-
-            echo $this->element_after();
-
-        }
-
-    }
-
-}
+	}
+endif;

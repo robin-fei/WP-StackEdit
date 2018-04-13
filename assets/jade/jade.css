@@ -2,10 +2,9 @@
     position: absolute;
     top: 0;
     width: 96%;
-    height: 337px;
     z-index: 1000;
     padding: 20px 2%;
-    overflow-y: auto;
+    margin-bottom: 100px;
     /*display: none;*/
 }
 
@@ -13,8 +12,20 @@
     display:none;
 }
 
-/*隐藏文本编辑器和富文本编辑器*/
-#content_ifr,
-#content {
-    display: none;
+#stackedit-close {
+    z-index: 1001;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+#stackedit-close:before {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+#stackedit-close:hover {
+    background-color: rgba(10, 10, 10, 0.3);
+    color: rgba(10, 10, 10, 0.3);
 }

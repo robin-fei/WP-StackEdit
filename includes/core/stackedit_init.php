@@ -55,14 +55,13 @@ class stackedit_init {
 		add_filter( 'plugin_row_meta', array( $this, 'stackedit_plugin_row_meta' ), 10, 2 );
 
 		//创建插件菜单
-		add_action( 'init', array(new stackedit_admin(), 'create_menu') );
+		//add_action( 'init', array(new stackedit_admin(), 'create_menu') );
 
 		//启用激活的函数
 		register_activation_hook( STACKEDIT_NAME, array($this, 'stackedit_activate') );
 
 		//停用激活的函数
 		register_deactivation_hook( STACKEDIT_NAME, array($this, 'stackedit_deactivator') );
-
 	}
 
 	/**

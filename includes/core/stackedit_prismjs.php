@@ -588,8 +588,8 @@ class stackedit_prismjs {
 	}
 
 	public function prism_languages( $content ) {
-		if ( preg_match_all( '/<code class="language-([a-z\-0-9]+)"/', $content, $language_matches ) > 0 && ! empty( $language_matches[1] ) ) {
-			foreach ( $language_matches[1] as $language_match ) {
+		if ( preg_match_all( '/<code class="(.*?)language-([a-z\-0-9]+)"/', $content, $language_matches ) > 0 && ! empty( $language_matches[1] ) ) {
+			foreach ( $language_matches[2] as $language_match ) {
 				if ( isset( $this->languages_all[ $language_match ] ) ) {
 					$this->languages_all[ $language_match ]['used'] = true;
 					$this->update_require( $this->languages_all[ $language_match ] );
@@ -623,8 +623,8 @@ class stackedit_prismjs {
 
 		$prism_plugins = array(
 //			"line-numbers" => array(
-//				"css" => paf('line_numbers') == 1 ? true : false,
-//				"js"  => paf('line_numbers') == 1 ? true : false
+//				"css" =>  false,
+//				"js"  => false
 //			)
 		);
 		$prism_styles  = array();

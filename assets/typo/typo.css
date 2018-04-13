@@ -54,7 +54,7 @@
 #stackedit-template menu,
 #stackedit-template nav,
 #stackedit-template section {
-  margin: 0;
+  margin: 5px 0 10px;
   padding: 0;
 }
 
@@ -103,6 +103,10 @@
 #stackedit-template fieldset,
 #stackedit-template img {
   border: 0;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:100%;
 }
 
 /* 块/段落引用 */

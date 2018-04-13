@@ -1,25 +1,30 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Text
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_text' ) ) {
+<?php
 
-    class Exopite_Simple_Options_Framework_Field_text extends Exopite_Simple_Options_Framework_Fields {
+if ( ! class_exists('npf_field_text')):
+	class npf_field_text extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'text';
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
-            parent::__construct( $field, $value, $unique, $where );
-        }
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function output(){
 
-            echo $this->element_before();
-            echo '<input type="'. $this->element_type() .'" name="'. $this->element_name() .'" value="'. $this->element_value() .'"'. $this->element_class() . $this->element_attributes() .'/>';
-            echo $this->element_after();
+		function render_field($args)
+		{
 
-        }
+			$text_class = 'regular-text';
+			if (isset($args['field']['text_type']) && in_array($args['field']['text_type'], array('small','regular','large') )) {
+				$text_class = $args['field']['text_type'] . '-text';
+			}
+			$field_value = $this->get_value($args);
+			echo '<input type="text" name="'.$args['field_name'].'" id="'.$args['field_id'].'" value="'.$field_value.'" class="' . $text_class . ' code" />';
 
-    }
+		}
 
-}
+	}
+endif;

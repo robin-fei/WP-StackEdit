@@ -1,31 +1,28 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Number
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_number' ) ) {
+<?php
+if ( ! class_exists('npf_field_number')):
+	class npf_field_number extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'number';
 
-    class Exopite_Simple_Options_Framework_Field_number extends Exopite_Simple_Options_Framework_Fields {
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
-            parent::__construct( $field, $value, $unique, $where );
-        }
 
-        public function output() {
+		function render_field($args)
+		{
 
-            echo $this->element_before();
-            $unit = ( isset( $this->field['unit'] ) ) ? '<em>'. $this->field['unit'] .'</em>' : '';
-            $attr = array();
-            if ( ! empty( $this->field['min'] ) ) $attr[] = 'min="' . $this->field['min'] . '"';
-            if ( ! empty( $this->field['max'] ) ) $attr[] = 'max="' . $this->field['max'] . '"';
-            if ( ! empty( $this->field['step'] ) ) $attr[] = 'step="' . $this->field['step'] . '"';
-            $attrs = ( ! empty( $attr ) ) ? ' ' . trim( implode( ' ', $attr ) ) : '';
-            echo '<input type="number" name="'. $this->element_name() .'" value="'. $this->element_value().'"'. $this->element_class() . $this->element_attributes() . $attrs . '/>'. $unit;
-            echo $this->element_after();
+			$field_value = $this->get_value($args);
+			$min = ( isset( $args['field']['min'] ) ) ? intval($args['field']['min']) : 0 ;
+			$max = ( isset( $args['field']['max'] ) ) ? intval($args['field']['max']) : 100 ;
+			$step = ( isset( $args['field']['step'] ) ) ? intval($args['field']['step']) : 1 ;
+			echo '<input type="number" name="'.$args['field_name'].'" id="'.$args['field_id'].'" value="'.$field_value.'" class="regular-text code" min="'.$min.'" max="'.$max.'" step="'.$step.'" />';
 
-        }
+		}
 
-    }
-
-}
+	}
+endif;

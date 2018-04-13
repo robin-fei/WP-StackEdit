@@ -31,14 +31,20 @@ if (!class_exists( 'stackedit_init' )) {
 }
 
 // 检查并且加载后台选项配置文件
-if (!class_exists('stackedit_admin')) {
-	require_once STACKEDIT_DIR . '/includes/core/stackedit_admin.php';
-}
+//if (!class_exists('stackedit_admin')) {
+//	require_once STACKEDIT_DIR . '/includes/core/stackedit_admin.php';
+//}
 
 // 检查并且加载后台选项框架
-if (!class_exists('Exopite_Simple_Options_Framework')) {
-	require_once STACKEDIT_DIR . '/includes/options/exopite-simple-options-framework-class.php';
-}
+//if (!class_exists('Exopite_Simple_Options_Framework')) {
+//	require_once STACKEDIT_DIR . '/includes/options/exopite-simple-options-framework-class.php';
+//}
+
+require_once STACKEDIT_DIR . '/includes/core/stackedit_options.php';
+
+// 检查并且加载后台选项框架
+
+require_once STACKEDIT_DIR . '/includes/core/stackedit_prismjs.php';
 
 // 获取类实例
 stackedit_init::get_instance();

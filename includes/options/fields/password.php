@@ -1,25 +1,25 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-/**
- *
- * Field: Password
- *
- */
-if( ! class_exists( 'Exopite_Simple_Options_Framework_Field_password' ) ) {
+<?php
+if ( ! class_exists('npf_field_password')):
+	class npf_field_password extends npf_field
+	{
+		var $args;
+		function __construct()
+		{
+			// vars
+			$this->name = 'password';
 
-    class Exopite_Simple_Options_Framework_Field_password extends Exopite_Simple_Options_Framework_Fields {
+			// do not delete!
+	  	parent::__construct();
+		}
 
-        public function __construct( $field, $value = '', $unique = '', $where = '' ) {
-            parent::__construct( $field, $value, $unique, $where );
-        }
 
-        public function output(){
+		function render_field($args)
+		{
 
-            echo $this->element_before();
-            echo '<input type="'. $this->element_type() .'" name="'. $this->element_name() .'" value="'. $this->element_value() .'"'. $this->element_class() . $this->element_attributes() .'/>';
-            echo $this->element_after();
+			$field_value = $this->get_value($args);
+			echo '<input type="password" name="'.$args['field_name'].'" id="'.$args['field_id'].'" value="'.$field_value.'" class="regular-text code" />';
 
-        }
+		}
 
-    }
-
-}
+	}
+endif;
