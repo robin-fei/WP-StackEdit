@@ -1,5 +1,7 @@
 # WP StackEdit
 
+![wp-stackedit](./screenshot/wp-stackedit.png)
+
 Thanks to the author of [StackEdit](https://github.com/benweet/stackedit.js) for such beautiful works
 
 More info read to [readme.txt](readme.txt)
